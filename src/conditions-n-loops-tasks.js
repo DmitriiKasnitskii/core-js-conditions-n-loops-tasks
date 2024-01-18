@@ -468,22 +468,45 @@ function rotateMatrix(matrix) {
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
 function sortByAsc(arr) {
-  let done = false;
-  const array = arr;
+  function heapify(arr1, n, i) {
+    let largest = i;
+    const left = 2 * i + 1;
+    const right = 2 * i + 2;
+    const arr1Copy = arr1;
 
-  while (!done) {
-    done = true;
-    for (let i = 1; i < array.length; i += 1) {
-      if (array[i - 1] > array[i]) {
-        done = false;
-        const tmp = array[i - 1];
-        array[i - 1] = array[i];
-        array[i] = tmp;
-      }
+    if (left < n && arr1Copy[left] > arr1Copy[largest]) {
+      largest = left;
+    }
+
+    if (right < n && arr1Copy[right] > arr1Copy[largest]) {
+      largest = right;
+    }
+
+    if (largest !== i) {
+      const swap = arr1Copy[i];
+      arr1Copy[i] = arr1Copy[largest];
+      arr1Copy[largest] = swap;
+
+      heapify(arr1Copy, n, largest);
     }
   }
 
-  return array;
+  const n = arr.length;
+  const arrCopy = arr;
+
+  for (let i = Math.floor(n / 2) - 1; i >= 0; i -= 1) {
+    heapify(arrCopy, n, i);
+  }
+
+  for (let i = n - 1; i >= 0; i -= 1) {
+    const swap = arrCopy[0];
+    arrCopy[0] = arrCopy[i];
+    arrCopy[i] = swap;
+
+    heapify(arrCopy, i, 0);
+  }
+
+  return arrCopy;
 }
 
 /**
@@ -510,16 +533,12 @@ function shuffleChar(str, iterations) {
   for (let i = 0; i < iterations; i += 1) {
     let result = '';
 
-    for (let j = 0; j < length; j += 1) {
-      if (j % 2 === 0) {
-        result += strCopy[j];
-      }
+    for (let j = 0; j < length; j += 2) {
+      result += strCopy[j];
     }
 
-    for (let j = 0; j < length; j += 1) {
-      if (j % 2 !== 0) {
-        result += strCopy[j];
-      }
+    for (let j = 1; j < length; j += 2) {
+      result += strCopy[j];
     }
 
     strCopy = result;
