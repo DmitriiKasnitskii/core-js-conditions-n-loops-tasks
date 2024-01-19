@@ -527,24 +527,25 @@ function sortByAsc(arr) {
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
 function shuffleChar(str, iterations) {
-  const { length } = str;
-  let strCopy = str;
+  let shuffledStr = str;
+  const lengthStr = shuffledStr.length;
 
-  for (let i = 0; i < iterations; i += 1) {
-    let result = '';
+  for (let i = 1; i <= iterations; i += 1) {
+    let oddChars = '';
+    let evenChars = '';
 
-    for (let j = 0; j < length; j += 2) {
-      result += strCopy[j];
+    for (let j = 0; j < lengthStr; j += 1) {
+      if (j % 2 === 0) {
+        evenChars += shuffledStr[j];
+      } else {
+        oddChars += shuffledStr[j];
+      }
     }
 
-    for (let j = 1; j < length; j += 2) {
-      result += strCopy[j];
-    }
-
-    strCopy = result;
+    shuffledStr = evenChars + oddChars;
   }
 
-  return strCopy;
+  return shuffledStr;
 }
 
 /**
